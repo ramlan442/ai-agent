@@ -10,6 +10,7 @@ import { omit } from 'lodash';
 import type {
   AIAgentOptions,
   AIAgentResponse,
+  ChatModelLike,
   ToolOptions,
   MemoryConfig,
   KnowledgeBaseConfig,
@@ -17,7 +18,6 @@ import type {
 } from './types/index';
 import { ToolManager } from './tools/index';
 import { MemoryManager } from './memory/memory-manager';
-import { ModelFactory } from './models/model-factory';
 import { EmbeddingsFactory } from './models/embeddings-factory';
 import { createVectorSearchTool } from './tools/vector-tools';
 import { getMcpServerTools } from './tools/mcp-client';
@@ -91,9 +91,9 @@ export class AIAgent {
     modelConfig: AIAgentOptions['model'],
   ): Promise<void> {
     try {
-      this.model = await ModelFactory.createModel(modelConfig);
+      this.model = modelConfig as BaseChatModel;
 
-      if (!this.model.bindTools) {
+      if (!(modelConfig as ChatModelLike).bindTools) {
         throw new Error(
           'AI Agent requires a Chat Model which supports Tools calling',
         );
@@ -427,7 +427,6 @@ export class AIAgent {
 export * from './types/index';
 export { MemoryManager } from './memory/index';
 export { ToolManager } from './tools/index';
-export { ModelFactory } from './models/model-factory';
 export { EmbeddingsFactory } from './models/embeddings-factory';
 export { getMcpServerTools } from './tools/mcp-client';
 export { convertJsonSchemaToZod } from './tools/json-schema-to-zod';

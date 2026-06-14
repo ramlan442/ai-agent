@@ -1,6 +1,10 @@
 import type { JSONSchema7 } from 'json-schema';
 import type { z } from 'zod';
 
+export interface ChatModelLike {
+  bindTools?: (...args: any[]) => any;
+}
+
 // LangChain types for intermediate steps
 export interface AgentAction {
   /** Name of the tool to execute */
@@ -24,7 +28,7 @@ export interface AgentStep {
 
 export interface AIAgentOptions {
   /** The chat model to use for the agent */
-  model: ModelConfig;
+  model: ChatModelLike;
 
   /** System message to provide context to the agent */
   systemMessage?: string;
@@ -49,14 +53,6 @@ export interface AIAgentOptions {
 
   /** MCP server configurations for automatic tool registration */
   mcpServers?: MCPServerConfig[];
-}
-
-export interface ModelConfig {
-  provider: 'openai' | 'anthropic';
-  model: string;
-  temperature?: number;
-  maxTokens?: number;
-  apiKey?: string;
 }
 
 export interface EmbeddingsConfig {
