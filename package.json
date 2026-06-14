@@ -18,6 +18,7 @@
     "lint": "eslint src/**/*.ts",
     "clean": "rm -rf dist",
     "validate": "node validate.js",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run clean && npm run build && npm run validate",
     "demo:postgres": "NODE_NO_WARNINGS=1 dotenv -- ts-node examples/postgres-demo.ts",
     "demo:basic": "NODE_NO_WARNINGS=1 dotenv -- ts-node examples/basic-usage.ts",
